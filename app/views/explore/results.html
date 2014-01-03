@@ -1,0 +1,38 @@
+<div class="container">
+	<div class="row">
+		<button class="btn btn-default pull-left" ng-click="$back()"><span
+				class="glyphicon glyphicon-chevron-left"></span> back
+		</button>
+	</div>
+	<h2>set results</h2>
+	<div class="row panel panel-primary" ng-repeat="(id, graphRow) in graphs">
+		<div class="panel-heading">
+			<h3 class="panel-title">{{ graphRow.name }}</h3>
+		</div>
+		<div class="col-sm-8">
+
+			<canvas id="{{ id }}" width="400" height="300"></canvas>
+		</div>
+		<div class="col-sm-4 panel-body">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">legend</h3>
+				</div>
+				<table class="table">
+					<thead>
+					<tr>
+						<th>set name</th>
+						<th>colour</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr ng-repeat="row in graphRow.legend">
+						<td>{{ row.set }}</td>
+						<td style="background-color: {{ row.color }}"></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

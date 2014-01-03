@@ -1,0 +1,32 @@
+<div class="container">
+	<div class="row">
+		<button class="btn btn-default pull-left" ng-click="$back()"><span class="glyphicon glyphicon-chevron-left"></span> back</button>
+	</div>
+	<div class="row">
+
+		</div>
+		<div class="col-md-6">
+			<h2>List volume comparison</h2>
+			<canvas id="market-share" width="400" height="400"></canvas>
+			<aside class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">legend</h3>
+				</div>
+
+				<table class="table">
+					<tr>
+						<th>Keyword</th>
+						<th>total units in lists</th>
+						<th>percent of total</th>
+					</tr>
+					<tr ng-repeat="row in legend">
+						<td><strong style="color: {{ row.color }}">{{ row.keyword }}</strong></td>
+						<td>{{ row.value }}kpl.</td>
+						<td>{{ row.percent }}%</td>
+					</tr>
+				</table>
+			</aside>
+
+		</div>
+	</div>
+</div>

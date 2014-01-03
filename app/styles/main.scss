@@ -1,0 +1,43 @@
+
+$white: #fff;
+$black: #444;
+
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300);
+
+// core
+@import	'window';
+
+// atoms
+
+// molecules
+@import 'molecules/results-panel';
+@import 'molecules/logo';
+
+// organisms
+
+
+
+//$green;
+html{
+	font-size: 10px;
+	margin: 0;
+}
+
+body {
+	margin: 5rem+3.2rem 0 0; // compensating for bootstrap fixed nav bar.
+	font: 400 1.4rem/1.5 'Source Sans Pro', sans-serif;
+	color: $black;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: inherit;
+}
+
+.graph-canvas {
+	width: 100%;
+	min-height: 400px;
+}
+
+@media screen and (max-width:768px) {
+	html{font-size:8px;}
+}

@@ -1,0 +1,10 @@
+node_modules
+dist
+.tmp
+.sass-cache
+.idea
+.project
+.settings
+.metadata
+app/bower_components
+app/styles/*.css

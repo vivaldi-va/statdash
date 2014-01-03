@@ -1,0 +1,131 @@
+<div class="container">
+	<div class="row">
+		<button class="btn btn-default pull-left" ng-click="$back()">
+			<span class="glyphicon glyphicon-chevron-left"></span> back
+		</button>
+		<button class="btn btn-primary pull-right" ng-click="doStuff()">do stuff
+			<span class="glyphicon glyphicon-chevron-right"></span></button>
+	</div>
+	<div class="row">
+
+		<div class="col-sm-4">
+			<h2>1. Sets</h2>
+
+			<div class="panel panel-default">
+				<div class="panel-heading"><h3 class="panel-title">Available sets</h3></div>
+
+
+				<ul class="list-group search-results">
+					<li class="list-group-item" ng-repeat="(key, item) in set">
+						<strong>{{ item.name }}</strong>
+						<input class="pull-right" type="checkbox" ng-model="selectedSets[key]">
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<h2>2. Constraints</h2>
+
+			<div class="panel panel-default">
+				<div class="panel-heading"><h3 class="panel-title">Timescale</h3></div>
+				<div class="panel-body">
+					<form name="dateForm" action="">
+						<div class="form-group">
+							<label for="date1">Start date</label>
+							<input id="date1" class="form-control" type="date" ng-model="dateStart" disabled>
+						</div>
+						<div class="form-group">
+							<label for="date2">End date</label>
+							<input id="date2" class="form-control" type="date" ng-model="dateEnd" disabled>
+						</div>
+					</form>
+				</div>
+			</div>
+
+
+			<div class="panel panel-default">
+				<div class="panel-heading"><h3 class="panel-title">Location (optional)</h3></div>
+				<div class="panel-body">
+					<form action="">
+						<div class="form-group">
+							<label for="location-search">Location search</label>
+
+							<div class="input-group">
+								<input id="location-search" class="form-control" type="search" ng-model="locationSearch" disabled>
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="submit">Go!</button>
+								</span>
+							</div>
+						</div>
+					</form>
+
+					<div class="panel panel-default" ng-show="!!locationSearch.results">
+						<div class="panel-heading">results</div>
+						<ul class="list-group">
+							<li class="list-group-item">a result</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<h2>3. Graph Maker</h2>
+			<div id="graph-list" class="panel-group" ng-controller="GraphListCtrl">
+				<div class="panel panel-primary">
+					<div class="panel-heading"><h3 class="panel-title">New graph</h3></div>
+					<div class="panel-body">
+						<form name="graphCreate" ng-submit="makeGraph()">
+
+							<div class="form-group">
+								<label for="graphName">Graph name</label>
+								<input id="graphName" class="form-control" type="text" value="graph {{numGraphs+1}}" ng-model="graphName" required>
+							</div>
+
+
+							<div class="form-group">
+								<label for="graphPreset">Choose which graph to make</label>
+								<select name="graphPreset" id="graphPreset" class="form-control" ng-model="graphPreset" required>
+									<option value="numchecked">Quantity checked-out</option>
+								</select>
+							</div>
+
+							<div class="form-group">
+								<label for="graphConstraint">Constraint</label>
+
+								<select id="graphConstraint" class="form-control" ng-model="graphConstraint" disabled>
+									<option value="1" selected>time</option>
+									<option value="2">location</option>
+								</select>
+							</div>
+
+							<button class="btn btn-primary" type="submit">Create graph</button>
+						</form>
+					</div>
+				</div>
+
+
+				<h3>Saved graphs</h3>
+				<div class="panel panel-default" ng-repeat="(id, graph) in graphs">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#graph-list" data-target="#{{ id }}">
+								{{ graph.name }} <div class="badge pull-right">{{ graph.sets.length }}</div>
+							</a>
+						</h4>
+					</div>
+					<div class="panel-collapse collapse" id="{{ id }}">
+						<ul class="list-group">
+							<li class="list-group-item" ng-repeat="set in getGraphSets(graph)">{{ set.name }}<div class="badge">{{ set.length }}</div></li>
+						</ul>
+						<div class="panel-footer">
+							<button class="btn btn-danger" ng-click="removeGraph(id)">remove graph</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<button class="btn btn-primary" ng-click="newGraph" ng-show="setGraphs.count > 1">add new graph</button>
+		</div>
+
+	</div>
+</div>

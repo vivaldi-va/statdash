@@ -1,0 +1,17 @@
+.search-results {
+	height: 500px;
+	overflow-y: scroll;
+
+	li {
+		line-height: 1.15;
+		&:nth-child(even) {
+			background: darken($white, 2.5%);
+		}
+		&.active {
+			&:nth-child(even) {
+				background-color: #428bca;
+
+			}
+		}
+	}
+}

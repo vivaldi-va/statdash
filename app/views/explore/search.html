@@ -1,0 +1,63 @@
+<div class="container">
+	<div class="row">
+		<button class="btn btn-default pull-left" ng-click="$back()"><span class="glyphicon glyphicon-chevron-left"></span> back</button>
+		<button class="btn btn-primary pull-right" ng-click="analysis()">analysis <span class="glyphicon glyphicon-chevron-right"></span></button>
+	</div>
+	<div class="row">
+		<section class="col-xs-4">
+			<h2>1. Product Search</h2>
+			<form id="explore-search" name="exploreSearch" ng-submit="search()">
+				<div class="form-group">
+					<div class="input-group">
+						<input type="text" class="form-control" name="term" ng-model="term" autofocus="" autocomplete="" required="">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="submit" data-loading-text="...">Go!</button>
+						</span>
+					</div>
+				</div>
+			</form>
+			<div class="panel panel-default scrollable-results" ng-show="exploreResults.results.length > 0">
+				<div class="panel-heading"><h3 class="panel-title">Results</h3> <strong>{{ exploreResults.attributes.filter_matches }}</strong>/{{ exploreResults.attributes.total }}</div>
+				<ul class="list-group search-results">
+					<li class="list-group-item" ng-repeat="result in exploreResults.results | filterMatches: result" ng-class="{active: !!result.filter_match}">{{ result.name }}</li>
+				</ul>
+			</div>
+			<div class="alert alert-info" ng-show="exploreResults.results.length == 0 && exploreSearch.$dirty">
+				<strong>No results found</strong>
+			</div>
+			<!-- /input-group -->
+		</section>
+		<section class="col-xs-4">
+			<h2>2. Filters</h2>
+
+			<div class="form-group">
+				<div class="btn-group">
+
+					<button class="btn btn-default" ng-click="selectNone()">Select none</button>
+					<button class="btn btn-default" ng-click="search()">Apply Filters</button>
+					<button class="btn btn-primary" ng-click="saveSet(exploreResults.results, exploreResults.attributes.filter_matches)">save set</button>
+				</div>
+			</div>
+
+			<div class="panel panel-default scrollable-results" ng-show="exploreResults.results.length > 0">
+				<div class="panel-heading">
+					<input class="form-control" type="text" autocomplete="false" ng-model="filterSearch" placeholder="search filters">
+					<span class="help-block">filter results by keyword</span>
+				</div>
+				<ul class="list-group search-results">
+
+						<li class="list-group-item" ng-repeat="term in exploreResults.filter_terms | orderBy: frequency:number | filter:filterSearch">
+							<div class="badge pull-left">{{ term.frequency }} </div> {{ term.keyword }}
+							<input class="pull-right filter-check" type="checkbox" ng-model="activeFilters[term.keyword]">
+						</li>
+				</ul>
+			</div>
+		</section>
+		<section class="col-xs-4">
+			<h2>Saved sets</h2>
+			<div class="saved-set" ng-repeat="(id, set) in sets">
+				<button class="btn btn-default btn-xs" ng-click="removeSet(id)"><strong>&times;</strong></button> <div class="label label-primary" >{{ set.name }} <div class="badge">{{ set.length }}</div></div>
+			</div>
+		</section>
+	</div>
+</div>

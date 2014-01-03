@@ -1,0 +1,42 @@
+<div class="row">
+	<div class="col-md-offset-3 col-md-6">
+		<h2>Sign in:</h2>
+		<form id="login-form" class="form-horizontal well" name="loginForm" ng-submit="submit()">
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="login-form-email">email:</label>
+				<div class="col-md-10">
+					<input class="form-control" id="login-form-email" name="email" type="email" ng-model="email" required>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="login-form-password">password:</label>
+
+				<div class="col-md-10">
+					<input class="form-control" id="login-form-password" name="password" type="password" ng-model="password" required>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="remember"> Remember me</input>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<button type="submit" class="btn btn-primary">sign in</button>
+				</div>
+			</div>
+		</form>
+		<div class="alert alert-warning" ng-show="loginForm.$error.message && loginForm.$dirty">
+			<strong>Error! </strong>
+			{{ loginForm.$error.message }}
+
+		</div>
+	</div>
+</div>

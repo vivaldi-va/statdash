@@ -1,0 +1,168 @@
+$blue: #003A63;
+
+.logo-container {
+	font-size: 8px;
+	position: relative;
+	float: left;
+	width: 6.5em;
+	height: 5em;
+	margin: 0.5em 1em 0 0;
+	background-color: $white;
+	-webkit-border-radius: 1em;
+	-moz-border-radius: 1em;
+	border-radius: 1em;
+}
+
+[class*='connection'] {
+	position: absolute;
+
+	width: 0.25em;
+	background: $black;
+	height: 1em;
+}
+
+.connection01 {
+	bottom: 1em;
+	left: 1em;
+	height: 3.5em;
+	margin: 0 0 0 (0.25em/2)*-1;
+	-webkit-transform-origin: 0 100%;
+	-moz-transform-origin: 0 100%;
+	-ms-transform-origin: 0 100%;
+	-o-transform-origin: 0 100%;
+	transform-origin: 0 100%;
+	-webkit-transform: rotate(38deg);
+	-moz-transform: rotate(38deg);
+	-ms-transform: rotate(38deg);
+	-o-transform: rotate(38deg);
+	transform: rotate(38deg);
+}
+
+.connection02{
+	bottom: 1.5em;
+	left: 3em;
+	height: 2em;
+	margin: 0 0 0 (0.25em/2)*-1;
+}
+.connection03 {
+	position: absolute;
+	bottom: -0.35em;
+	left: 3em;
+	margin: 0 0 0 (0.25em/2)*-1;
+
+	width: 0.25em;
+	height: 2em;
+	-webkit-transform-origin: 0 0%;
+	-moz-transform-origin: 0 0%;
+	-ms-transform-origin: 0 0%;
+	-o-transform-origin: 0 0%;
+	transform-origin: 0 0%;
+	-webkit-transform: rotate(76deg);
+	-moz-transform: rotate(76deg);
+	-ms-transform: rotate(76deg);
+	-o-transform: rotate(76deg);
+	transform: rotate(76deg);
+}
+.connection04{
+	bottom: 1.35em;
+	left: 4.5em;
+	height: 1.5em;
+	margin: (0.25em/2)*-1 0 0 0;
+	-webkit-transform-origin: 0 100%;
+	-moz-transform-origin: 0 100%;
+	-ms-transform-origin: 0 100%;
+	-o-transform-origin: 0 100%;
+	transform-origin: 0 100%;
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+.connection05{
+	bottom: 1.35em;
+	left: 4.5em;
+	height: 2.5em;
+	margin: 0 0 0 (0.25em/2)*-1;
+	-webkit-transform-origin: 0 100%;
+	-moz-transform-origin: 0 100%;
+	-ms-transform-origin: 0 100%;
+	-o-transform-origin: 0 100%;
+	transform-origin: 0 100%;
+	-webkit-transform: rotate(-35deg);
+	-moz-transform: rotate(-35deg);
+	-ms-transform: rotate(-35deg);
+	-o-transform: rotate(-35deg);
+	transform: rotate(-35deg);
+}
+.connection06 {
+
+	bottom: 1.65em;
+	right: 1.25em;
+
+	background: #999;
+	height: 2em;
+	-webkit-transform-origin: 0 0%;
+	-moz-transform-origin: 0 0%;
+	-ms-transform-origin: 0 0%;
+	-o-transform-origin: 0 0%;
+	transform-origin: 0 0%;
+	-webkit-transform: rotate(16deg);
+	-moz-transform: rotate(16deg);
+	-ms-transform: rotate(16deg);
+	-o-transform: rotate(16deg);
+	transform: rotate(16deg);
+}
+.connection07 {
+	bottom: 1.65em;
+	right: 1.25em;
+	background: #999;
+	height: 2em;
+	-webkit-transform-origin: 0 0%;
+	-moz-transform-origin: 0 0%;
+	-ms-transform-origin: 0 0%;
+	-o-transform-origin: 0 0%;
+	transform-origin: 0 0%;
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+
+.ball {
+	position: absolute;
+
+	width: 1em;
+	height: 1em;
+	background: $black;
+
+	border-radius: 50%;
+
+
+	&.ball-01 {
+		bottom: 0.5em;
+		left: 0.5em;
+
+	}
+
+	&.ball-02{
+		bottom: 1em;
+		left: 2.5em;
+	}
+	&.ball-03{
+		bottom: 1em;
+		left: 4em;
+	}
+	&.ball-04{
+		top: 1em;
+		left: 2.5em;
+	}
+
+	&.ball-05{
+		top: 1em;
+		right: 1em;
+		background: #999;
+	}
+}
