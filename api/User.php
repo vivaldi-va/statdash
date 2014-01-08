@@ -188,7 +188,7 @@ class User {
 		 * and is authenticated
 		 */
 		if(isset($_COOKIE['av_statdash_email'])) {
-			$email = mysql_real_escape_string($_COOKIE['av_statdash_email']);
+			$email = $_COOKIE['av_statdash_email'];
 			if ($this->_checkUserExists($email)) {
 				$_SESSION['av_statdash_email'] = $email;
 				$returnModel['success'] = 1;
