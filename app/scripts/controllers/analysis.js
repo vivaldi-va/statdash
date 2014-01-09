@@ -1,4 +1,4 @@
-statDashApp.controller('AnalysisCtrl', function($scope, $routeParams, $explore, $location) {
+angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $routeParams, $explore, $location) {
 	console.log($routeParams['set']);
 	var setName = $routeParams['set'];
 	$scope.set = $explore.getSets();

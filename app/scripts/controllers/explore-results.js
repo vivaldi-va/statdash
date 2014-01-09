@@ -1,4 +1,4 @@
-statDashApp.controller('ExploreResCtrl', function ($scope, $http, $q, $explore)
+angular.module('Deep.Controllers').controller('ExploreResCtrl', function ($scope, $http, $q, $explore)
 {
 	var graphs = $explore.getGraphs(),
 		sets = $explore.getSets();

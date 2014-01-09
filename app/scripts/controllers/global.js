@@ -1,4 +1,4 @@
-statDashApp.controller('GlobalCtrl', ['$scope', function($scope) {
+angular.module('Deep.Controllers').controller('GlobalCtrl', ['$scope', function($scope) {
 	$scope.$back = function() {
 		window.history.back();
 	};

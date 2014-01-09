@@ -1,9 +1,13 @@
 <?php
 
 require_once './User.php';
+require_once './Set.php';
+require_once './utils.php';
 
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
+
+$utils = new Utils();
 
 
 if(isset($_REQUEST['query'])) {
@@ -37,7 +41,23 @@ if(isset($_REQUEST['query'])) {
 			break;
 		case 'pass-reset':
 			break;
-		case 'newset':
+			
+		case 'search':
+			if(isset($_REQUEST['term'])) {
+				if(isset($_REQUEST['filter_terms'])) 
+						exit(json_encode($utils->getProductSearch($_REQUEST['term'], $_REQUEST['filter_terms'])));
+				else
+					exit(json_encode($utils->getProductSearch($_REQUEST['term'])));
+			}
+				
+			
+			break;
+			
+		case 'createset':
+			break;
+		case 'editset':
+			break;
+		case 'removeset':
 			break;
 		case 'newgraph':
 			break;

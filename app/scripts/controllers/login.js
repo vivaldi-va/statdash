@@ -1,4 +1,4 @@
-statDashApp.controller('LoginCtrl', function($auth, $scope, $location) {
+angular.module('Deep.Controllers').controller('LoginCtrl', function($auth, $scope, $location) {
 
 	//$scope.loginForm.$error.message = null;
 	$scope.$on('$routeChangeSuccess', function() {$location.path('/dash')});

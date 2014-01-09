@@ -17,7 +17,10 @@
 				</div>
 			</form>
 			<div class="panel panel-default scrollable-results" ng-show="exploreResults.results.length > 0">
-				<div class="panel-heading"><h3 class="panel-title">Results</h3> <strong>{{ exploreResults.attributes.filter_matches }}</strong>/{{ exploreResults.attributes.total }}</div>
+				<div class="panel-heading">
+					<h3 class="panel-title">Results</h3>
+					<span class="help-block">({{ exploreResults.results.length }} matching products)</span>
+				</div>
 				<ul class="list-group search-results">
 					<li class="list-group-item" ng-repeat="result in exploreResults.results | filterMatches: result" ng-class="{active: !!result.filter_match}">{{ result.name }}</li>
 				</ul>
@@ -35,7 +38,7 @@
 
 					<button class="btn btn-default" ng-click="selectNone()">Select none</button>
 					<button class="btn btn-default" ng-click="search()">Apply Filters</button>
-					<button class="btn btn-primary" ng-click="saveSet(exploreResults.results, exploreResults.attributes.filter_matches)">save set</button>
+					<button class="btn btn-primary" ng-click="saveSet(exploreResults.results, exploreResults.filter_matches)">save set</button>
 				</div>
 			</div>
 

@@ -1,4 +1,4 @@
-statDashApp.controller('ExploreCtrl', function($scope, $explore, $location, $routeParams) {
+angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $explore, $location, $log) {
 	$scope.exploreResults = null;
 	$scope.activeFilters = {};
 	//$scope.sets = $explore.getSets();
@@ -23,20 +23,17 @@ statDashApp.controller('ExploreCtrl', function($scope, $explore, $location, $rou
 				filterArray.push(f);
 			}
 		}
-		console.log(filterArray);
+		$log.info('DEBUG: Filters ', filterArray);
 		$scope.exploreSearch.$setDirty();
 		$explore.search($scope.term, filterArray).then(
 			function(data) {
+				$log.info('DEBUG: search results retrieved ', data);
 				$('#explore-search [type="submit"]').button('reset');
 				console.log(data);
-
-				if(!!data.error) {
-					$scope.exploreResultsError = data.error;
-				} else {
-					$scope.exploreResults = data;
-				}
+				$scope.exploreResults = data;
 			},
 			function(reason) {
+				$log.warn('DEBUG: Search failed ', filterArray);
 				$('#explore-search [type="submit"]').button('reset');
 				$scope.exploreResultsError = reason;
 			}

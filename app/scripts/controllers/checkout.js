@@ -1,4 +1,4 @@
-statDashApp.controller('CheckoutCtrl', function($scope, $q, $http) {
+angular.module('Deep.Controllers').controller('CheckoutCtrl', function($scope, $q, $http) {
 	function getGraphData() {
 		var dfd = $q.defer();
 

@@ -33,7 +33,7 @@
 	<link rel="stylesheet" href="styles/main.css">
 	<!-- endbuild -->
 </head>
-<body ng-app="statDashApp" ng-controller="GlobalCtrl">
+<body ng-app="Deep" ng-controller="GlobalCtrl">
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
 	your browser</a> to improve your experience.</p>
@@ -75,9 +75,8 @@
 <!-- build:js({.tmp,app}) scripts/app.js -->
 <script src="scripts/functions.js"></script>
 <script src="scripts/app.js"></script>
-<!-- endbuild -->
-
-<!-- build:js({.tmp,app}) scripts/controllers.js -->
+<script src="scripts/services/exploreservice.js"></script>
+<script src="scripts/config/route.js"></script>
 <script src="scripts/controllers/global.js"></script>
 <script src="scripts/controllers/login.js"></script>
 <script src="scripts/controllers/dash.js"></script>

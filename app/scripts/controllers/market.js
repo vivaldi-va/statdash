@@ -1,4 +1,4 @@
-statDashApp.controller('MarketCtrl', function($scope, $http, $q) {
+angular.module('Deep.Controllers').controller('MarketCtrl', function($scope, $http, $q) {
 
 	function getGraphData(termsData) {
 
