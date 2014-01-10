@@ -6,21 +6,20 @@ angular.module('Deep.Controllers', []);
 angular.module('Deep.Filters', []);
 
 angular.module('Deep', ['Deep.Route', 'Deep.Services', 'Deep.Controllers', 'Deep.Filters'])
-	.run(function ($location, $auth) {
-		var status = $auth.status();
-
-		status.then(
+	.run(function ($location, $auth, $log) {
+		$log.info('INIT', "checking session");
+		$auth.status().then(
 			function (status) {
-				if (!!status.logged_in) {
-					if ($location.path() == '/') {
-						$location.path('/dash');
-					}
-				} else {
-					$location.path('/');
+				//$log.info('INIT', "checking session succeeded", status);
+				$log.info('INIT', "session found", status);
+				if ($location.path() == '/') {
+					$location.path('/dash');
 				}
+
 			},
 			function (reason) {
-
+				$log.info('INIT', "no user session found because", reason);
+				$location.path('/login');
 			}
 		);
 	});

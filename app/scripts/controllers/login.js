@@ -1,7 +1,7 @@
-angular.module('Deep.Controllers').controller('LoginCtrl', function($auth, $scope, $location) {
+angular.module('Deep.Controllers').controller('LoginCtrl', function($auth, $scope, $location, $log) {
 
 	//$scope.loginForm.$error.message = null;
-	$scope.$on('$routeChangeSuccess', function() {$location.path('/dash')});
+	//$scope.$on('$routeChangeSuccess', function() {$location.path('/dash')});
 	$scope.submit = function() {
 		/*
 		 * Set the form to be 'dirty' on submitting.
@@ -9,14 +9,19 @@ angular.module('Deep.Controllers').controller('LoginCtrl', function($auth, $scop
 		 * into a form field, this ensures it is set if no field
 		 * is modified on submitting.
 		 */
-		$scope.loginForm.$setDirty();
 
+
+		$scope.loginForm.$setDirty();
+		$scope.loginForm.$error = [];
 		$auth.login($scope.email, $scope.password).then(
 			function(status) {
-				if (status.error.length > 0) {
+				if (!!status.error) {
 					//directly attach error to login form
 					$scope.loginForm.$error.message = status.error;
-				} else {
+				}
+
+				if (!!status.success) {
+					$log.info('DEBUG', "Login Controller:", "login successful");
 					$location.path('/dash');
 				}
 			},

@@ -159,17 +159,29 @@ class User {
 		$returnModel['success'] = 1;
 		$returnModel['message'] = "login successful";
 		
+		$this->_query("UPDATE users SET last_logged_in = CURRENT_TIMESTAMP where email = \"$email\"");
+		
 		return $returnModel;
 		
 	}
 	
 	public function logout() {
+		
+		
 		if (isset($_COOKIE['av_statdash_email'])){
 			setcookie("av_statdash_email", "", time()-COOKIE_EXPIRE, COOKIE_PATH);
 		}
 		
 		/* Unset PHP session variables */
-		unset($_SESSION['av_statdash_email']);
+		if(isset($_SESSION['av_statdash_email']))
+			unset($_SESSION['av_statdash_email']);
+		
+		return array(
+				"error" => null,
+				"success" => 1,
+				"message" => "Logged you out, good bye",
+				"data" => null
+		);
 		
 	}
 	
@@ -216,12 +228,14 @@ class User {
 	private function _getUserInfo($email) {
 
 		
-		$sql = "SELECT `email`, `account_level`, `company` FROM users WHERE email = \"$email\"";
+		$sql = "SELECT * FROM users WHERE email = \"$email\"";
 		
 		$result = $this->_query($sql);
 		//$userRow = $result->fetch_row();
 		return $result->fetch_assoc();
 	}
+	
+	
 	
 	private function _checkUserExists($email) {
 		

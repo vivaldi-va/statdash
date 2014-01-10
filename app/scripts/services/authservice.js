@@ -12,13 +12,11 @@ angular.module('Deep.Services')
 				}
 			};
 
-
-		function _isSignedIn() {}
-
 		function _status() {
 			var dfd = $q.defer(),
 				self = this;
 
+			$log.info('AUTH', "checking session");
 			$http({
 				url: '../api/',
 				params: {query: 'checksession'},
@@ -26,10 +24,11 @@ angular.module('Deep.Services')
 			})
 				.success(function (data) {
 					if (!data.success) {
-						dfd.reject('No connection to server could be made');
+						$log.info('AUTH', data.message);
+						dfd.reject(data.message);
 					} else {
 						//Global.loggedIn = true;
-						$log.info('DEBUG', "current_user: ", current_user);
+						$log.info('AUTH', "session found for user: ", current_user);
 						current_user.email = data.data.email;
 						dfd.resolve(data);
 					}
@@ -44,10 +43,12 @@ angular.module('Deep.Services')
 
 		function _login(email, pass) {
 			var dfd = $q.defer();
+
 			$http({
-				url: '../../login/',
-				method: 'GET',
-				params: {email: email, pass: pass}
+				url: '../api/',
+				method: 'post',
+				params: {query: 'login'},
+				data: {email: email, password: pass}
 			})
 				.success(function (data) {
 					if (data.success === undefined) {
@@ -64,7 +65,28 @@ angular.module('Deep.Services')
 			return dfd.promise;
 		}
 
-		function _logout() {}
+		function _logout() {
+			var dfd = $q.defer();
+			$log.info('AUTH', 'Logout');
+			$http({
+				url: '../api/',
+				method: 'get',
+				params: {query: 'logout'}
+			})
+				.success(function(status) {
+					if (!!status.message)  {
+
+						dfd.resolve(status.message);
+						$log.info('AUTH', 'Logout successful');
+					}
+				})
+				.error(function(reason) {
+					$log.info('AUTH', 'something went wrong because ', reason);
+					dfd.reject(reason);
+				});
+
+			return dfd.promise;
+		}
 
 		function _createUser(email, name, pass) {
 			var dfd = $q.defer();
