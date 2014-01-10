@@ -3,6 +3,7 @@
 require_once './dbConfig.php';
 require_once './vars.php';
 
+
 class User {
 	
 	
@@ -47,9 +48,9 @@ class User {
 		
 		
 		// sanitise input info
-		$email = mysql_real_escape_string($email);
-		$password = mysql_real_escape_string($password);
-		$name = mysql_real_escape_string($name);
+		$email = mysqli_real_escape_string(new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT), $email);
+		$password = mysqli_real_escape_string(new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT), $password);
+		$name = mysqli_real_escape_string(new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT), $name);
 		
 		
 		// check for existing user
@@ -103,8 +104,8 @@ class User {
 		 * sanitize input data
 		 */
 		
-		$email = mysql_real_escape_string($email);
-		$password = mysql_real_escape_string($password);
+		$email = mysqli_real_escape_string(new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT), $email);
+		$password = mysqli_real_escape_string(new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT), $password);
 		
 		/*
 		 * validate input data
@@ -192,10 +193,13 @@ class User {
 			if ($this->_checkUserExists($email)) {
 				$_SESSION['av_statdash_email'] = $email;
 				$returnModel['success'] = 1;
+
+				$returnModel['data'] = $this->_getUserInfo($email);
 			}
 		} else if (isset($_SESSION['av_statdash_email'])) {
 			if ($this->_checkUserExists($email)) {
 				$returnModel['success'] = 1;
+				$returnModel['data'] = $this->_getUserInfo($email);
 			}			
 		} else {
 			$returnModel['message'] = "user not logged in";
@@ -210,9 +214,12 @@ class User {
 	}
 	
 	private function _getUserInfo($email) {
-		$sql = "SELECT * FROM users WHERE email = \"$email\"";
+
+		
+		$sql = "SELECT `email`, `account_level`, `company` FROM users WHERE email = \"$email\"";
 		
 		$result = $this->_query($sql);
+		//$userRow = $result->fetch_row();
 		return $result->fetch_assoc();
 	}
 	
