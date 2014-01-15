@@ -1,7 +1,7 @@
 <?php
 
 require_once './User.php';
-require_once './Set.php';
+//require_once './Set.php';
 require_once './utils.php';
 
 header('Access-Control-Allow-Origin: *');
