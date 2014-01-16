@@ -1,7 +1,7 @@
 <?php
 
 require_once './User.php';
-//require_once './Set.php';
+require_once './Set.php';
 require_once './utils.php';
 
 header('Access-Control-Allow-Origin: *');
@@ -54,6 +54,18 @@ if(isset($_REQUEST['query'])) {
 			break;
 			
 		case 'createset':
+			$set = new Set();
+			if($data) {
+				exit(json_encode($set->createSet($data)));
+			} else {
+				exit(json_encode(array("success"=>0, "error"=>"no data supplied to make set")));
+			}
+			break;
+			
+		case 'getallsets':
+			//exit('getallsets');
+			$set = new Set();
+			exit(json_encode($set->getUserSets()));
 			break;
 		case 'editset':
 			break;
@@ -61,6 +73,8 @@ if(isset($_REQUEST['query'])) {
 			break;
 		case 'newgraph':
 			break;
+		default:
+			exit(json_encode(array("error" => "BAD QUERY")));
 			
 	}
 	
@@ -69,4 +83,8 @@ if(isset($_REQUEST['query'])) {
 	
 	
 	
+} else {
+	exit(json_encode(array("error" => "NO QUERY")));
 }
+
+

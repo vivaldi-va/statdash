@@ -1,8 +1,12 @@
-angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $explore, $location, $log) {
+angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $explore, $set, $location, $log) {
+
+	$scope.errors = [];
+	$scope.successes = [];
+
 	$scope.exploreResults = null;
 	$scope.activeFilters = {};
 	//$scope.sets = $explore.getSets();
-	$scope.sets = $explore.getSets();
+	$scope.sets = $set.getSets();
 
 	$scope.numInSet = 0;
 	$scope.results = 0;
@@ -72,10 +76,12 @@ angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $e
 
 	};
 
+	// reset the filter checkboxes,
+	// clear the selected filters scope object
 	$scope.selectNone = function() {
-		$('.filter-check').each(function(k, v) {
+		/*$('.filter-check').each(function(k, v) {
 			$(this).attr('checked', false);
-		});
+		});*/
 
 		$scope.activeFilters = {};
 	};
@@ -99,55 +105,28 @@ angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $e
 		return !!filter(result);
 	};
 
-	$scope.saveSet = function(list, numMatches) {
-
-		var filteredSet = [],
-			words = [],
-			setName = "";
+	$scope.saveSet = function() {
+		var products = $scope.exploreResults.results;
+		var filterTerms = $scope.activeFilters;
 
 
-
+		var setName = $scope.setName || false;
 
 
 
+		// if there's any products in the results,
+		// send to set service for the database adding
+		if(products.length) {
+			$set.makeSet(setName, products, $scope.term, filterTerms)
+				.then(
+					function(success) {
 
-		/*
-		 * Create the set name from the active filters
-		 */
+					},
+					function(reason) {
 
-		setName = $scope.term;
-		for(var word in $scope.activeFilters) {
-			if (!!$scope.activeFilters[word]) {
-				if(setName==="") {
-					setName += word;
-				} else {
-					setName += " ";
-					setName += word;
-				}
-			}
+					}
+				);
 		}
-
-
-		/*
-		 * add the filtered products into a temp array
-		 */
-		if (numMatches > 0) {
-			for(var r in list) {
-				//console.log(list[r]);
-				if (!!list[r].filter_match) {
-					filteredSet.push(list[r].id);
-				}
-			}
-		} else {
-			for(var r in list) {
-				//console.log(list[r]);
-				filteredSet.push(list[r].id);
-			}
-		}
-		// add the filtered set to localStorage
-		$explore.makeSet(setName, filteredSet);
-		$scope.sets = $explore.sets;
-		console.log(filteredSet);
 
 	};
 
@@ -161,6 +140,10 @@ angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $e
 		if (!!$explore.sets()) {
 			$scope.sets = $explore.sets();
 		}*/
+	};
+
+	$scope.getSets = function() {
+		$scope.sets = $set.getSets();
 	};
 
 	$scope.analysis = function() {
