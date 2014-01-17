@@ -91,9 +91,31 @@ angular.module('Deep.Services')
 			return dfd.promise;
 		}
 
+
+		function _removeSet(hash) {
+			var dfd = $q.defer();
+			var params = {"query": 'removeset', "hash": hash};
+
+			$http({
+				url: '../api',
+				method: 'get',
+				params: params
+			})
+				.success(function(status) {
+					if(!status.success) {dfd.reject(status.error);}
+					if(!!status.success) {dfd.resolve(status.message);}
+				})
+				.error(function(reason) {
+					dfd.reject(reason);
+				});
+
+			return dfd.promise;
+		}
+
 		return {
 			makeSet: _makeSet,
-			getSets: _getSets
+			getSets: _getSets,
+			removeSet: _removeSet
 		};
 
 	});

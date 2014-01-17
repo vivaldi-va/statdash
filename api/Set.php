@@ -9,7 +9,12 @@ class Set {
 
 	// ID for newly inserted row
 	var $insertId = null;
-	
+	var $returnmodel = array(
+				"error" => null,
+				"success" => 0,
+				"message" => "",
+				"data" => null
+		);
 	
 	
 	/**
@@ -51,9 +56,9 @@ class Set {
 		// 6. repeat 2. until done.
 		
 		if($hash) {
-			$sql = "SELECT `id`, `hash`, `name` FROM sets WHERE user = $user AND `hash`=\"$hash\"";
+			$sql = "SELECT `id`, `hash`, `name` FROM sets WHERE `active` = 1 AND `user` = $user AND `hash`=\"$hash\"";
 		} else {
-			$sql = "SELECT `id`, `hash`, `name` FROM sets WHERE user = $user";
+			$sql = "SELECT `id`, `hash`, `name` FROM sets WHERE `active` = 1 AND user = $user";
 		}
 		
 		$result = $this->_query($sql);
@@ -86,6 +91,12 @@ class Set {
 		
 	}
 	
+	/**
+	 * Create a new set from a list of products
+	 * 
+	 * @param multi-dimensional array $data
+	 * @return array: status object containing usable information
+	 */
 	public function createSet($data) {
 		
 		$returnModel = array(
@@ -123,6 +134,50 @@ class Set {
 
 	}
 	
+	
+	public function removeSet($hash) {
+		
+		// validate the hash is not empty or missing
+		if(!$hash || empty($hash)) {
+			$this->returnmodel['error'] = "hash id missing";
+			return $this->returnmodel;
+		}
+		
+		// check that the set exists at all
+		if(!$this->_checkSetExists($hash)) {
+			$this->returnmodel['error'] = "Set does not exist";
+			return $this->returnmodel;
+		}
+		
+		$sql = "UPDATE sets SET `active`=0, `removed`=CURRENT_TIMESTAMP WHERE `hash` = \"$hash\"";
+		if($result = $this->_query($sql)) {
+			$this->returnmodel['success'] = 1;
+			$this->returnmodel['message'] = "Set remove successfully";
+			return $this->returnmodel;
+		}		
+		
+	}
+	
+	
+	private function _checkSetExists($hash) {
+		$sql = "SELECT id FROM sets WHERE `hash` = \"$hash\"";
+		if($result = $this->_query($sql)) {
+			if($result->num_rows == 0)
+				return false;
+			else 
+				return true;
+		} else {
+			return false;
+		}
+		
+	}
+	
+	/**
+	 * Get information from a list of products using their product IDs
+	 * 
+	 * @param array $idArr
+	 * @return array of product info
+	 */
 	private function _getProductInfo($idArr) {
 		$idArr = implode(", ", $idArr);
 		$sql = "SELECT barcode, categoryID, brandID, picUrl as pic, name FROM products WHERE id IN ($idArr)";
@@ -130,6 +185,7 @@ class Set {
 		$productsArr = array();
 		$result = $this->_query($sql, true);
 		while($row = $result->fetch_assoc()) {
+			// utf8 encode product name to avoid accented characters breaking the string
 			$row['name'] = utf8_encode($row['name']);
 			array_push($productsArr, $row); 
 		}

@@ -1,10 +1,11 @@
 'use strict';
-
+// init the modules
 angular.module('Deep.Route', []);
 angular.module('Deep.Services', []);
 angular.module('Deep.Controllers', []);
 angular.module('Deep.Filters', []);
 
+// initialize the application
 angular.module('Deep', ['Deep.Route', 'Deep.Services', 'Deep.Controllers', 'Deep.Filters'])
 	.run(function ($location, $auth, $log) {
 		$log.info('INIT', "checking session");

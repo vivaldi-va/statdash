@@ -6,7 +6,8 @@ angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $e
 	$scope.exploreResults = null;
 	$scope.activeFilters = {};
 	//$scope.sets = $explore.getSets();
-	$scope.sets = $set.getSets();
+
+
 
 	$scope.numInSet = 0;
 	$scope.results = 0;
@@ -20,6 +21,7 @@ angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $e
 			filterArray = [];
 
 
+		$log.info('DEBUG', "sets object", $scope.sets);
 		$('#explore-search [type="submit"]').button('loading');
 
 		for(var f in filters) {
@@ -72,17 +74,10 @@ angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $e
 		return matchAll;
 	}
 
-	$scope.filterResults = function() {
-
-	};
 
 	// reset the filter checkboxes,
 	// clear the selected filters scope object
 	$scope.selectNone = function() {
-		/*$('.filter-check').each(function(k, v) {
-			$(this).attr('checked', false);
-		});*/
-
 		$scope.activeFilters = {};
 	};
 
@@ -109,10 +104,7 @@ angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $e
 		var products = $scope.exploreResults.results;
 		var filterTerms = $scope.activeFilters;
 
-
 		var setName = $scope.setName || false;
-
-
 
 		// if there's any products in the results,
 		// send to set service for the database adding
@@ -120,30 +112,40 @@ angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $e
 			$set.makeSet(setName, products, $scope.term, filterTerms)
 				.then(
 					function(success) {
-
+						$scope.getSets();
 					},
 					function(reason) {
-
+						$scope.errors.push(reason);
 					}
 				);
 		}
 
 	};
 
-	$scope.removeSet = function(id) {
+	$scope.removeSet = function(hash) {
 
-		console.log(id);
-		$explore.removeSet(id);
-		console.log($explore.sets);
-		$scope.sets = $explore.sets;
-		/*
-		if (!!$explore.sets()) {
-			$scope.sets = $explore.sets();
-		}*/
+
+		$set.removeSet(hash)
+			.then(
+				function(success) {
+					$scope.successes.push(success);
+				},
+				function(reason) {
+					$scope.errors.push(reason);
+				}
+			);
+		$scope.sets = $set.getSets();
 	};
 
 	$scope.getSets = function() {
-		$scope.sets = $set.getSets();
+		$set.getSets().then(
+			function(success) {
+				$scope.sets = success;
+			},
+			function(reason) {
+				$scope.errors.push(reason);
+			}
+		);
 	};
 
 	$scope.analysis = function() {
@@ -166,5 +168,5 @@ angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $e
 			//console.log($explore.set());
 		}, 100)
 	}
-
+	$scope.getSets();
 });

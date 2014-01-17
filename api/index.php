@@ -74,6 +74,13 @@ if(isset($_REQUEST['query'])) {
 		case 'editset':
 			break;
 		case 'removeset':
+			$set = new Set();
+			if(isset($_REQUEST['hash'])) {
+				exit(json_encode($set->removeSet($_REQUEST['hash'])));
+			} else {
+				$model = array("error" => "no set supplied", "success"=>0);
+				exit(json_encode($model));
+			}
 			break;
 		case 'newgraph':
 			break;

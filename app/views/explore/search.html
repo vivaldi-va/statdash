@@ -59,7 +59,10 @@
 		<section class="col-xs-4">
 			<h2>Saved sets</h2>
 			<div class="saved-set" ng-repeat="(id, set) in sets">
-				<button class="btn btn-default btn-xs" ng-click="removeSet(id)"><strong>&times;</strong></button> <div class="label label-primary" >{{ set.name }} <div class="badge">{{ set.length }}</div></div>
+				<button class="btn btn-default btn-xs" ng-click="removeSet(set.hash)"><strong>&times;</strong></button> <div class="label label-primary" >{{ set.name }} <div class="badge">{{ set.length }}</div></div>
+			</div>
+			<div class="alert alert-info" ng-show="sets.length==0">
+				<strong>You have no sets</strong>
 			</div>
 		</section>
 	</div>
