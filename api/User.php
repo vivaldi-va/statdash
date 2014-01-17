@@ -280,12 +280,13 @@ class User {
 		// if connection error, return error message
 		if($db->connect_errno) {
 			$returnModel['error'] = $db->connect_error;
-			return $returnModel;
+			exit(json_encode($returnModel));
 		}	
 		
 		// if database query fails, return query error
 		if(!$result = $db->query($sql)) {
 			$returnModel['error'] = $db->error;
+			exit(json_encode($returnModel));
 		}
 		
 		/*

@@ -30,7 +30,7 @@ angular.module('Deep.Services')
 						//Global.loggedIn = true;
 						$log.info('AUTH', "session found for user: ", current_user);
 						current_user.email = data.data.email;
-						dfd.resolve(data);
+						dfd.resolve(true);
 					}
 				})
 				.error(function checkLoginError(e) {

@@ -13,7 +13,8 @@ angular.module('Deep', ['Deep.Route', 'Deep.Services', 'Deep.Controllers', 'Deep
 			function (status) {
 				//$log.info('INIT', "checking session succeeded", status);
 				$log.info('INIT', "session found", status);
-				if ($location.path() == '/') {
+				$log.info('DEBUG', "Path on init", $location.path());
+				if ($location.path() == '/' || $location.path() === '/login') {
 					$location.path('/dash');
 				}
 
