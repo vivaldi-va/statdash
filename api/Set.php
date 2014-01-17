@@ -25,7 +25,7 @@ class Set {
 	 * Get all data sets for the current user
 	 * 
 	 */
-	public function getUserSets() {
+	public function getUserSets($hash=false) {
 		$user = $this->_getActiveUserId();
 		$setData = array();
 		
@@ -50,7 +50,11 @@ class Set {
 		// 5. push the set model into the set data array
 		// 6. repeat 2. until done.
 		
-		$sql = "SELECT `id`, `hash`, `name` FROM sets WHERE user = $user";
+		if($hash) {
+			$sql = "SELECT `id`, `hash`, `name` FROM sets WHERE user = $user AND `hash`=\"$hash\"";
+		} else {
+			$sql = "SELECT `id`, `hash`, `name` FROM sets WHERE user = $user";
+		}
 		
 		$result = $this->_query($sql);
 		while($row = $result->fetch_assoc()) {

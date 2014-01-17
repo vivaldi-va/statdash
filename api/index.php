@@ -62,10 +62,14 @@ if(isset($_REQUEST['query'])) {
 			}
 			break;
 			
-		case 'getallsets':
+		case 'getsetdata':
 			//exit('getallsets');
 			$set = new Set();
-			exit(json_encode($set->getUserSets()));
+			if(isset($_REQUEST['hash'])) {
+				exit(json_encode($set->getUserSets($_REQUEST['hash'])));
+			} else {
+				exit(json_encode($set->getUserSets()));
+			}
 			break;
 		case 'editset':
 			break;
