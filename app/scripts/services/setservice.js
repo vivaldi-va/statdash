@@ -3,9 +3,9 @@
  */
 
 angular.module('Deep.Services')
-	.factory('$set', function($http, $q, $log) {
+	.factory('$set', function($rootScope, $http, $q, $log) {
 
-
+		$rootScope.sets = null;
 
 		function _makeSet(setName, setData, searchTerm, filters) {
 
@@ -81,6 +81,7 @@ angular.module('Deep.Services')
 					}
 
 					if(!!data.success) {
+						$rootScope.sets = data.data;
 						dfd.resolve(data.data);
 					}
 				})

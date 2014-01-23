@@ -25,7 +25,7 @@ angular.module('Deep.Route')
 				templateUrl: 'views/explore/search.html',
 				controller: 'ExploreCtrl'
 			})
-			.when('/explore/:set/analysis', {
+			.when('/explore/analysis', {
 				templateUrl: 'views/explore/analysis.html',
 				controller: 'AnalysisCtrl'
 			})

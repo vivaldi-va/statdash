@@ -16,15 +16,16 @@
 
 
 				<ul class="list-group search-results">
-					<li class="list-group-item" ng-repeat="(key, item) in set">
-						<strong>{{ item.name }}</strong>
-						<input class="pull-right" type="checkbox" ng-model="selectedSets[key]">
+					<li class="list-group-item" ng-repeat="(key, set) in sets">
+						<strong>{{ set.name }}</strong>
+						<input class="pull-right" type="checkbox" ng-model="selectedSets[set.hash]">
 					</li>
 				</ul>
 			</div>
+			{{ selectedSets }}
 		</div>
 		<div class="col-sm-4">
-			<h2>2. Constraints</h2>
+			<!--<h2>2. Constraints</h2>
 
 			<div class="panel panel-default">
 				<div class="panel-heading"><h3 class="panel-title">Timescale</h3></div>
@@ -66,7 +67,7 @@
 						</ul>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 		<div class="col-sm-4">
 			<h2>3. Graph Maker</h2>

@@ -156,7 +156,7 @@ angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $e
 		// since we're using the search results, delete the filter terms for now
 		//delete $explore.set['filter_terms'];
 		// go to analysis page
-		$location.path('/explore/set/analysis');
+		$location.path('/explore/analysis');
 
 
 
@@ -167,6 +167,6 @@ angular.module('Deep.Controllers').controller('ExploreCtrl', function($scope, $e
 			console.log($scope.analSet);
 			//console.log($explore.set());
 		}, 100)
-	}
+	};
 	$scope.getSets();
 });

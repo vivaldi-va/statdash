@@ -1,10 +1,23 @@
-angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $routeParams, $explore, $location) {
+angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $rootScope, $routeParams, $explore, $set, $location) {
 	console.log($routeParams['set']);
 	var setName = $routeParams['set'];
 	$scope.set = $explore.getSets();
 	$scope.numGraphs = 0;
 	$scope.selectedSets = {};
 	$scope.graphs = $explore.getGraphs();
+
+
+
+
+	if(!$scope.sets) {
+		$set.getSets()
+			.then(
+				function(success) {
+					$scope.sets = success;
+				},
+				function(reason) {}
+			);
+	}
 
 	/**
 	 * for each graph in the saved graph list
@@ -31,9 +44,6 @@ angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $
 
 	};
 
-	console.log($explore.getGraphs());
-
-	console.log($scope.set);
 
 	$scope.doStuff = function() {
 		$location.path('/explore/analysis/results');
