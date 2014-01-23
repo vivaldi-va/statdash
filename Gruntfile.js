@@ -415,6 +415,7 @@ module.exports = function (grunt)
 		'copy:bootstrapfonts',
 		'cdnify',
 		'ngmin',
+		'uglify',
 		'cssmin',
 		'rev',
 		'usemin'
