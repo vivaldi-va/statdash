@@ -1,4 +1,4 @@
-angular.module('Deep.Controllers').controller('GlobalCtrl', ['$scope', '$location', '$auth', '$log', function($scope, $location, $auth, $log) {
+angular.module('Deep.Controllers').controller('GlobalCtrl', ['$scope', '$location', '$auth', '$log', '$location', function($scope, $location, $auth, $log, $location) {
 	$scope.$back = function() {
 		window.history.back();
 	};
@@ -15,5 +15,10 @@ angular.module('Deep.Controllers').controller('GlobalCtrl', ['$scope', '$locatio
 			},
 			function (reason) {}
 		);
+	};
+
+	$scope.$path = function(path) {
+		$log.info('DEBUG:', "new path", path);
+		$location.path(path);
 	};
 }]);

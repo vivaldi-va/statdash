@@ -2,6 +2,7 @@
 
 require_once './User.php';
 require_once './Set.php';
+require_once './Graph.php';
 require_once './utils.php';
 
 header('Access-Control-Allow-Origin: *');
@@ -82,7 +83,26 @@ if(isset($_REQUEST['query'])) {
 				exit(json_encode($model));
 			}
 			break;
+		case 'getgraphs':
+			$graph = new Graph();
+			if(isset($_REQUEST['graph'])) {
+				exit(json_encode($graph->getGraphData($_REQUEST['graph'])));
+			} else {
+				exit(json_encode($graph->getGraphData()));
+			}
+			break;
 		case 'newgraph':
+			$graph = new Graph();
+			exit(json_encode($graph->createGraph($data)));
+			break;
+		case 'getcheckouttime':
+			if(isset($_REQUEST['sets'])) {
+				$graph = new Graph($_REQUEST['sets']);
+				exit(json_encode($graph->checkoutsOverTime()));
+			} else {
+				$model = array("error" => "no sets supplied", "success"=>0);
+				exit(json_encode($model));
+			} 
 			break;
 		default:
 			exit(json_encode(array("error" => "BAD QUERY")));

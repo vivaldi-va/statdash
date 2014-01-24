@@ -1,10 +1,13 @@
-angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $rootScope, $routeParams, $explore, $set, $location) {
+angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $rootScope, $routeParams, $log, $explore, $set, $graph, $location) {
 	console.log($routeParams['set']);
 	var setName = $routeParams['set'];
 	$scope.set = $explore.getSets();
 	$scope.numGraphs = 0;
 	$scope.selectedSets = {};
-	$scope.graphs = $explore.getGraphs();
+	$scope.graphs = null;
+
+	$scope.errors = [];
+	$scope.successes = [];
 
 
 
@@ -26,21 +29,21 @@ angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $
 	 * @param graph
 	 */
 	$scope.getGraphSets = function(graph) {
-		var graphSets = graph.sets,
+		/*var graphSets = graph.sets,
 			setInfo = [],
 			sets = $scope.set;
 		      console.log(graph);
 
-		/*
+		*//*
 		 * for each set in graph.sets
 		 * get the set information that
 		 * is stored
-		 */
+		 *//*
 		for(var s in graphSets) {
 			setInfo.push(sets[graphSets[s]]);
 		}
 
-		return setInfo;
+		return setInfo;*/
 
 	};
 
@@ -51,7 +54,37 @@ angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $
 
 	};
 
+	$graph.getGraphList()
+		.then(
+			function(success) {
+				$scope.successes.push(success.message);
+				$scope.graphs = success.data;
+			},
+			function(reason) {
+				$scope.errors.push(reason);
+			}
+		);
 
+
+	$scope.makeGraph = function() {
+
+		var sets = [];
+
+		for(var s in $scope.selectedSets) {
+			if(!!$scope.selectedSets[s]) sets.push(s);
+		}
+
+		$graph.makeGraph(sets, $scope.name, $scope.type).then(
+			function(success) {
+				$scope.successes.push(success.message);
+				$log.info('DEBUG:', "created a graph", success.data);
+			},
+			function(reason) {
+				$scope.errors.push(reason);
+				$log.warn('ERR:', "graph creation failed", reason);
+			}
+		);
+	};
 
 
 

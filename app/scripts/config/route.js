@@ -33,6 +33,11 @@ angular.module('Deep.Route')
 				templateUrl: 'views/explore/results.html',
 				controller: 'ExploreResCtrl'
 			})
+			.when('/graph/:hash', {
+				templateUrl: 'views/graph.html',
+				controller: 'GraphCtrl'
+			})
+
 			.when('/market', {
 				templateUrl: 'views/market/terms.html',
 				controller: 'MarketCtrl'
