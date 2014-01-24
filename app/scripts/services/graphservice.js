@@ -44,8 +44,9 @@ angular.module('Deep.Services')
 			var params = {"query": 'getgraphs'},
 				dfd = $q.defer();
 
-			graph = graph || null;
+			var graph = graph || null;
 
+			$log.info('DEBUG:', "graph hash to get", graph);
 			if(!!graph) {
 				params.graph = graph;
 			}
