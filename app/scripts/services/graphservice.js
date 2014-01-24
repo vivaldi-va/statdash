@@ -73,52 +73,41 @@ angular.module('Deep.Services')
 		}
 
 
+        /**
+         * Generate graph data for checkout (for now) using a supplied graph info object
+         *
+         * @param graph the graph object
+         * @returns {promise} a promise which resolves to the graph data or an error
+         * @private
+         */
 		function _generateGraph(graph) {
 			var dfd = $q.defer();
 			var params = {"query": 'getcheckouttime', "sets": null};
-			var graph = null;
 
-			if(!graphHash) dfd.reject("no graph data selected");
+            // create the string of pipe delimited set hashes
+            var setHashArr = [];
+            for(var s=0;s<graph.sets.length;s++) {
+                setHashArr.push(graph.sets[s].hash);
+            }
+            // implode the set hashes for the graph into a string
+            params.sets = setHashArr.join('|');
 
+            $http({
+                url: '../api/',
+                method: 'get',
+                params: params
+            })
+                .success(function(data) {
+                    $log.info('DEBUG:', "Got graph data for graph ", graph, data);
+                    if(!data.success) dfd.reject(data.error);
+                    if(!!data.success) dfd.resolve(data.data);
+                    $log.info('GEN GRAPH:', "still in success");
+                })
+                .error(function(reason) {
+                    $log.warn('GEN GRAPH:', "generating graph values didnt work", reason);
+                    dfd.reject(reason);
 
-			// get the graph object
-			_getGraphList(graphHash)
-				.then(
-					function(success) {
-						graph = success.data[0];
-						var setHashArr = [];
-						for(var s=0;s<graph.sets.length;s++) {
-							setHashArr.push(graph.sets[s].hash);
-						}
-						// implode the set hashes for the graph into a string
-						params.sets = setHashArr.join('|');
-
-
-						//for(var g=0;g<graphs)
-
-						$http({
-							url: '../api/',
-							method: 'get',
-							params: params
-						})
-							.success(function(data) {
-								$log.info('DEBUG:', "Got graph data for graph ", graph, data);
-								if(!data.success) dfd.reject(data.error);
-								if(!!data.success) dfd.resolve(data.data);
-								$log.info('GEN GRAPH:', "still in success");
-							})
-							.error(function(reason) {
-								$log.warn('GEN GRAPH:', "generating graph values didnt work", reason);
-								dfd.reject(reason);
-
-							});
-						$log.info('GEN GRAPH:', "after teh http");
-					},
-					function(reason) {
-						$log.warn('GEN GRAPH:', "something went wrong getting graph data", reason);
-						dfd.reject(reason);
-					}
-				);
+                });
 
 
 			$log.info('GEN GRAPH:', "escaped the callback");
