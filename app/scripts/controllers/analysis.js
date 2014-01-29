@@ -4,7 +4,7 @@ angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $
 	$scope.set = $explore.getSets();
 	$scope.numGraphs = 0;
 	$scope.selectedSets = {};
-	$scope.graphs = null;
+	$scope.graphs = $rootScope.graphs;
 
 	$scope.errors = [];
 	$scope.successes = [];
@@ -26,6 +26,7 @@ angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $
 	 * for each graph in the saved graph list
 	 * get a list of it's sets that are referenced
 	 * by id in graph.sets
+	 *
 	 * @param graph
 	 */
 	$scope.getGraphSets = function(graph) {
@@ -54,16 +55,18 @@ angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $
 
 	};
 
-	$graph.getGraphList()
-		.then(
-			function(success) {
-				$scope.successes.push(success.message);
-				$scope.graphs = success.data;
-			},
-			function(reason) {
-				$scope.errors.push(reason);
-			}
-		);
+	if(!$scope.graphs) {
+		$graph.getGraphList()
+			.then(
+				function(success) {
+					$scope.successes.push(success.message);
+					$scope.graphs = success.data;
+				},
+				function(reason) {
+					$scope.errors.push(reason);
+				}
+			);
+	}
 
 
 	$scope.makeGraph = function() {
@@ -86,58 +89,10 @@ angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $
 		);
 	};
 
-
-
-})
-	.controller('GraphListCtrl', function($scope, $explore) {
-		var graphs = $explore.getGraphs(),
-			sets = $explore.getSets();
-		$scope.graphs = graphs;
-		$scope.sets = $explore.sets;
-
-		function _cleanGraphs() {
-			for(var g in graphs) {
-				var graphSets = graphs[g].sets;
-				console.log(graphSets);
-				for(var s in graphSets) {
-					if(!sets[graphSets[s]]) {
-						console.log("set " + s + " missing in " + g);
-						$explore.cleanGraphSets(g, s);
-						console.log(graphSets);
-					}
-				}
-			}
-			$scope.graphs = $explore.getGraphs();
-		}
-
-		_cleanGraphs();
-
-		$scope.makeGraph = function() {
-			var newGraph = {
-				name: $scope.graphName,
-				graph: $scope.graphPreset,
-				constraint: null,
-				sets: [],
-				length: 0
-			};
-
-			/*
-			 * add selected sets to graph
-			 */
-			for(var k in $scope.selectedSets) {
-				if(!!$scope.selectedSets[k]) {
-					newGraph.sets.push(k);
-				}
-			}
-			$explore.addGraph(newGraph);
-			//$explore.graphs.push(newGraph);
-			console.log($explore.graphs);
-			$scope.graphs = $explore.getGraphs();
-		};
-
-		$scope.removeGraph = function(id) {
-			$explore.removeGraph(id);
-			console.log($explore.graphs);
-			$scope.graphs = $explore.getGraphs();
-		}
+	$scope.$on('$viewContentLoaded', function(){
+		//$scope.getGraph
 	});
+
+
+
+});
