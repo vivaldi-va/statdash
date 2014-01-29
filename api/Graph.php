@@ -10,11 +10,11 @@ class Graph {
 	var $setProducts = array();
 	var $insertId = null;
 	var $returnmodel = array(
-			"error" => null,
-			"success" => 0,
-			"message" => "",
-			"data" => null
-	);
+		"error" => null,
+		"success" => 0,
+		"message" => "",
+		"data" => null
+		);
 	
 	
 	public function Graph($setHashString=null, $historyLength = 30, $interval = 1) {
@@ -36,9 +36,9 @@ class Graph {
 		$graphs = array();
 		
 		if($graph) {
-			$sql = "SELECT id, name, hash FROM graphs WHERE hash = \"$graph\" AND user = $user";
+			$sql = "SELECT id, name, hash FROM graphs WHERE active = 1 AND hash = \"$graph\" AND user = $user";
 		} else {
-			$sql = "SELECT id, name, hash FROM graphs WHERE user = $user";
+			$sql = "SELECT id, name, hash FROM graphs WHERE active = 1 AND user = $user";
 		}
 		
 		$result = $this->_query($sql);
@@ -48,9 +48,9 @@ class Graph {
 				"name" => $row['name'],
 				"hash" => $row['hash'],
 				"sets" => array()
-			);
+				);
 			
-			if($graphSetsResult = $this->_query("select sets.name, sets.hash FROM sets INNER JOIN (SELECT `set` from graph_sets WHERE graph = " . $row['id'] . ") s2 on sets.hash = s2.set;")) {
+			if($graphSetsResult = $this->_query("SELECT sets.name, sets.hash FROM sets INNER JOIN (SELECT `set` FROM graph_sets WHERE graph = " . $row['id'] . ") s2 ON sets.hash = s2.set;")) {
 				while($graphSetsRow = $graphSetsResult->fetch_assoc()) {
 					
 					array_push($graphArr['sets'], $graphSetsRow);
@@ -104,6 +104,25 @@ class Graph {
 		
 		return $this->returnmodel;
 	}
+
+
+	/**
+	 * Disable a graph (but dont remove it) by it's hash id
+	 * 
+	 * @param  string $graph the graph's hash id for reference
+	 * @return {array}
+	 */
+	public function removeGraph($graph) {
+		$sql = "UPDATE graphs SET active=0 WHERE hash=\"$graph\"";
+
+		if(!$result = $this->_query($sql)) {
+			return $this->returnmodel;
+		}
+
+		$this->returnmodel['success'] = 1;
+		$this->returnmodel['message'] = "Graph removed";
+		return $this->returnmodel;
+	}
 	
 	
 	
@@ -135,7 +154,7 @@ class Graph {
 			
 			// define the data object model for use with nvd3
 			// 'values' in this case would be an array of arrays, the latter having the values [<unix timestamp>, <value>]
-		
+
 			$dataArray = array("key"=>$this->_getSetName($hash), "values" => array());
 			$products = $this->_getSetProducts($hash);
 
@@ -247,7 +266,7 @@ class Graph {
 		$user = new User();
 		$user = $user->checkSession();
 		$email = $user['data']['email'];
-	
+
 		$res = $this->_query("SELECT id FROM users WHERE email = \"$email\"");
 		$row = $res->fetch_row();
 		return $row[0];
@@ -260,41 +279,41 @@ class Graph {
 	 * @return result object or array containing debug/error messages
 	 */
 	private function _query($sql, $onDb = false) {
-	
+
 		// model used to structure return data
 		$returnModel = array(
-				"error" => null,
-				"success" => 0,
-				"message" => "",
-				"data" => null
-		);
-	
+			"error" => null,
+			"success" => 0,
+			"message" => "",
+			"data" => null
+			);
+
 		// connect to database with mysqli
 		if($onDb) $db = new mysqli(ON_DB_HOST, ON_DB_USER, ON_DB_PASS, ON_DB_NAME, ON_DB_PORT);
 		else $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-	
+
 		// if connection error, return error message
 		if($db->connect_errno) {
 			$returnModel['error'] = $db->connect_error;
 			exit(json_encode($returnModel));
 		}
-	
+
 		// if database query fails, return query error
 		if(!$result = $db->query($sql)) {
 			$returnModel['error'] = $db->error;
 			$returnModel['message'] = $db->sqlstate;
-	
+
 			exit(json_encode($returnModel));
 		}
-	
+
 		/*
 		 * if everything works up to this point, just return the result
 		* model returning will be handled by the public function
 		*/
 		$this->insertId = $db->insert_id;
 		return $result;
-	
+
 		$db->close();
-	
+
 	}
 }

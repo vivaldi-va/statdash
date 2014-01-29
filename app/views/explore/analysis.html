@@ -119,7 +119,7 @@
 							<li class="list-group-item" ng-repeat="set in graph.sets">{{ set.name }}<div class="badge">{{ set.length }}</div></li>
 						</ul>
 						<div class="panel-footer">
-							<button class="btn btn-danger" ng-click="removeGraph(id)">remove graph</button>
+							<button class="btn btn-danger" ng-click="removeGraph(graph.hash)">remove graph</button>
 							<button class="btn btn-primary" ng-click="$path('/graph/' + graph.hash)">render graph</button>
 						</div>
 					</div>

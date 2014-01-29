@@ -40,6 +40,33 @@ angular.module('Deep.Services')
 			return dfd.promise;
 		}
 
+
+
+		function _removeGraph(graph) {
+			var dfd = $q.defer();
+
+			$http({
+				url: '../api/',
+				method: 'GET',
+				params: {"query": 'removegraph', "graph": graph}
+			})
+				.success(function(data) {
+					if(data.status === 0) {
+						dfd.reject(data.error);
+					}
+					if(data.success === 1) {
+						dfd.resolve(data.message);
+					}
+				})
+				.error(function(reason) {
+					dfd.reject(reason);
+				});
+			return dfd.promise;
+		}
+
+
+
+
 		function _getGraphList(graph) {
 			var params = {"query": 'getgraphs'},
 				dfd = $q.defer();
@@ -118,6 +145,7 @@ angular.module('Deep.Services')
 		return {
 			getGraphList: _getGraphList,
 			makeGraph: _makeGraph,
-			generateGraph: _generateGraph
+			generateGraph: _generateGraph,
+			removeGraph: _removeGraph
 		};
 	});

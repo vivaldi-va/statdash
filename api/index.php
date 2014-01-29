@@ -95,6 +95,16 @@ if(isset($_REQUEST['query'])) {
 			$graph = new Graph();
 			exit(json_encode($graph->createGraph($data)));
 			break;
+
+		case 'removegraph':
+			$graph = new Graph();
+			if(!isset($_GET['graph'])) {
+				exit(json_encode(array("error" => "NO_GRAPH", "success" => 0)));
+			} else {
+				exit(json_encode($graph->removeGraph($_GET['graph'])));	
+			}
+			break;
+
 		case 'getcheckouttime':
 			if(isset($_REQUEST['sets'])) {
 				$graph = new Graph($_REQUEST['sets']);

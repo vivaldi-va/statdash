@@ -11,6 +11,18 @@ angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $
 
 
 
+	function getGraphList() {
+		$graph.getGraphList()
+			.then(
+			function(success) {
+				$scope.successes.push(success.message);
+				$scope.graphs = success.data;
+			},
+			function(reason) {
+				$scope.errors.push(reason);
+			}
+		);
+	}
 
 	if(!$scope.sets) {
 		$set.getSets()
@@ -56,16 +68,7 @@ angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $
 	};
 
 	if(!$scope.graphs) {
-		$graph.getGraphList()
-			.then(
-				function(success) {
-					$scope.successes.push(success.message);
-					$scope.graphs = success.data;
-				},
-				function(reason) {
-					$scope.errors.push(reason);
-				}
-			);
+		 getGraphList();
 	}
 
 
@@ -80,6 +83,7 @@ angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $
 		$graph.makeGraph(sets, $scope.name, $scope.type).then(
 			function(success) {
 				$scope.successes.push(success.message);
+				getGraphList();
 				$log.info('DEBUG:', "created a graph", success.data);
 			},
 			function(reason) {
@@ -87,6 +91,20 @@ angular.module('Deep.Controllers').controller('AnalysisCtrl', function($scope, $
 				$log.warn('ERR:', "graph creation failed", reason);
 			}
 		);
+	};
+
+
+	$scope.removeGraph = function(graph) {
+		$graph.removeGraph(graph)
+			.then(
+				function(success) {
+					$scope.successes.push(success);
+					getGraphList();
+				},
+				function(error) {
+					$scope.errors.push(error);
+				}
+			);
 	};
 
 	$scope.$on('$viewContentLoaded', function(){
