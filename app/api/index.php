@@ -13,10 +13,11 @@ $utils = new Utils();
 
 if(isset($_REQUEST['query'])) {
 	$q = $_REQUEST['query'];
-	$data = json_decode(file_get_contents('php://input'), true);
+	
 	
 	switch($q) {
 		case 'register':
+			$data = json_decode(file_get_contents('php://input'), true);
 			if($data) {
 				$user = new User();
 				$result = $user->register($data['email'], $data['name'], $data['password']);
@@ -56,6 +57,7 @@ if(isset($_REQUEST['query'])) {
 			
 		case 'createset':
 			$set = new Set();
+			$data = json_decode(file_get_contents('php://input'), true);
 			if($data) {
 				exit(json_encode($set->createSet($data)));
 			} else {
@@ -93,6 +95,7 @@ if(isset($_REQUEST['query'])) {
 			break;
 		case 'newgraph':
 			$graph = new Graph();
+			$data = json_decode(file_get_contents('php://input'), true);
 			exit(json_encode($graph->createGraph($data)));
 			break;
 
@@ -115,7 +118,7 @@ if(isset($_REQUEST['query'])) {
 			} 
 			break;
 		default:
-			exit(json_encode(array("error" => "BAD QUERY")));
+			exit(json_encode(array("error" => "BAD_QUERY")));
 			
 	}
 	

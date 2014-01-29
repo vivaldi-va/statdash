@@ -45,13 +45,14 @@ class User {
 			return $returnModel;
 		}
 		
-		
+
+		$db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 		
 		// sanitise input info
-		$email = mysqli_real_escape_string(new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT), $email);
-		$password = mysqli_real_escape_string(new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT), $password);
-		$name = mysqli_real_escape_string(new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT), $name);
-		
+		$email = mysqli_real_escape_string($db, $email);
+		$password = mysqli_real_escape_string($db, $password);
+		$name = mysqli_real_escape_string($db, $name);
+		$db->close();
 		
 		// check for existing user
 		
@@ -87,10 +88,10 @@ class User {
 	public function login($email, $password) {
 
 		$returnModel = array(
-				"error" => null,
-				"success" => 0,
-				"message" => "",
-				"data" => null
+				"error" 	=> null,
+				"success" 	=> 0,
+				"message" 	=> "",
+				"data" 		=> null
 		);
 		
 		
@@ -103,9 +104,12 @@ class User {
 		/*
 		 * sanitize input data
 		 */
+		$db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 		
-		$email = mysqli_real_escape_string(new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT), $email);
-		$password = mysqli_real_escape_string(new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT), $password);
+		$email 		= mysqli_real_escape_string($db, $email);
+		$password 	= mysqli_real_escape_string($db, $password);
+
+		$db->close();
 		
 		/*
 		 * validate input data
@@ -134,11 +138,11 @@ class User {
 		 * re-hash password and compare against stored password
 		 */
 		
-		$userInfo = $this->_getUserInfo($email);
+		$userInfo 	= $this->_getUserInfo($email);
 		$storedPass = $userInfo['pass'];
-		$salt = $userInfo['salt'];
-		
-		$passHash = md5( md5($password) . md5($salt) );
+		$salt 		= $userInfo['salt'];
+		$passHash 	= md5( md5($password) . md5($salt) );
+
 		
 		if(!$passHash == $storedPass) {
 			$returnModel['error'] = "incorrect password";
@@ -177,10 +181,10 @@ class User {
 			unset($_SESSION['av_statdash_email']);
 		
 		return array(
-				"error" => null,
-				"success" => 1,
-				"message" => "Logged you out, good bye",
-				"data" => null
+				"error" 	=> null,
+				"success" 	=> 1,
+				"message" 	=> "Logged you out, good bye",
+				"data" 		=> null
 		);
 		
 	}
@@ -188,10 +192,10 @@ class User {
 	public function checkSession() {
 		
 		$returnModel = array(
-				"error" => null,
-				"success" => 0,
-				"message" => "",
-				"data" => null
+				"error" 	=> null,
+				"success" 	=> 0,
+				"message" 	=> "",
+				"data" 		=> null
 		);
 		
 		/*
@@ -202,9 +206,10 @@ class User {
 		 */
 		if(isset($_COOKIE['av_statdash_email'])) {
 			$email = $_COOKIE['av_statdash_email'];
+
 			if ($this->_checkUserExists($email)) {
-				$_SESSION['av_statdash_email'] = $email;
-				$returnModel['success'] = 1;
+				$_SESSION['av_statdash_email'] 	= $email;
+				$returnModel['success'] 		= 1;
 
 				$returnModel['data'] = $this->_getUserInfo($email);
 			}
