@@ -23,7 +23,7 @@ angular.module('Deep.Services')
 			};
 
 			$http({
-				url: "../api/",
+				url: "api/",
 				method: 'POST',
 				data: data,
 				params: {"query": 'newgraph'}
@@ -46,7 +46,7 @@ angular.module('Deep.Services')
 			var dfd = $q.defer();
 
 			$http({
-				url: '../api/',
+				url: 'api/',
 				method: 'GET',
 				params: {"query": 'removegraph', "graph": graph}
 			})
@@ -79,7 +79,7 @@ angular.module('Deep.Services')
 			}
 
 			$http({
-				url: '../api/',
+				url: 'api/',
 				method: 'get',
 				params: params
 			})
@@ -121,7 +121,7 @@ angular.module('Deep.Services')
             params.sets = setHashArr.join('|');
 
             $http({
-                url: '../api/',
+                url: 'api/',
                 method: 'get',
                 params: params
             })

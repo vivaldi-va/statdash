@@ -298,7 +298,8 @@ module.exports = function (grunt)
 							//'views/**/*',
 							'images/{,*/}*.{gif,webp}',
 							'styles/fonts/*',
-							'bower_components/**/fonts/*'
+							'bower_components/**/fonts/*',
+							'api/**/*'
 						]
 					},
 					{
@@ -319,7 +320,7 @@ module.exports = function (grunt)
 			},
 			bootstrapfonts: {
 				expand: true,
-				cwd: '<%= yeoman.app %>/bower_components/bootstrap/dist',
+				cwd: 'bower_components/bootstrap/dist',
 				dest: '<%= yeoman.dist %>',
 				src: [
 					'fonts/*'

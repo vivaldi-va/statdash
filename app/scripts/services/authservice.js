@@ -18,7 +18,7 @@ angular.module('Deep.Services')
 
 			$log.info('AUTH', "checking session");
 			$http({
-				url: '../api/',
+				url: 'api/',
 				params: {query: 'checksession'},
 				method: 'GET'
 			})
@@ -45,7 +45,7 @@ angular.module('Deep.Services')
 			var dfd = $q.defer();
 
 			$http({
-				url: '../api/',
+				url: 'api/',
 				method: 'post',
 				params: {query: 'login'},
 				data: {email: email, password: pass}
@@ -69,7 +69,7 @@ angular.module('Deep.Services')
 			var dfd = $q.defer();
 			$log.info('AUTH', 'Logout');
 			$http({
-				url: '../api/',
+				url: 'api/',
 				method: 'get',
 				params: {query: 'logout'}
 			})
@@ -92,7 +92,7 @@ angular.module('Deep.Services')
 			var dfd = $q.defer();
 
 			$http({
-				url: '../api/',
+				url: 'api/',
 				method: 'post',
 				params: {query: 'register'},
 				data: {email: email, name: name, password: pass}

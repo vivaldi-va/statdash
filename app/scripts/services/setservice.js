@@ -43,7 +43,7 @@ angular.module('Deep.Services')
 			}
 
 			$http({
-				url: "../api/",
+				url: "api/",
 				method: 'POST',
 				params: {"query": 'createset'},
 				data: {"name": setName, "products": setProductIds}
@@ -71,7 +71,7 @@ angular.module('Deep.Services')
 
 
 			$http({
-				url: "../api/",
+				url: "api/",
 				method: "get",
 				params: params
 			})
@@ -98,7 +98,7 @@ angular.module('Deep.Services')
 			var params = {"query": 'removeset', "hash": hash};
 
 			$http({
-				url: '../api',
+				url: 'api/',
 				method: 'get',
 				params: params
 			})
