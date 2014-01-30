@@ -15,10 +15,10 @@ class Utils {
 		
 		
 		
-		//$query = mysqli_real_escape_string($connection = new mysqli(ON_DB_HOST, ON_DB_USER, ON_DB_PASS, ON_DB_NAME, ON_DB_PORT), $query);
+		$query = mysqli_real_escape_string($connection = new mysqli(ON_DB_HOST, ON_DB_USER, ON_DB_PASS, ON_DB_NAME, ON_DB_PORT), $query);
 		
 		
-		//$connection->close();
+		$connection->close();
 
 		
 		
@@ -37,8 +37,7 @@ class Utils {
 		
 		$sql = "SELECT id, name, barcode, categoryID, created, picUrl 
 				FROM products 
-				WHERE $sqlAndString
-						OR barcode = \"%$query%\"";
+				WHERE $sqlAndString";
 		
 		$returnModel['debug'] = $sql;
 		//exit($sql);
@@ -48,7 +47,7 @@ class Utils {
 			if($result->num_rows == 0)
 				$returnModel['error'] = "no results found";
 			else {
-				$returnModel['data'] = array("filter_terms" => [], "results" => []);
+				$returnModel['data'] = array("filter_terms" => array(), "results" => array());
 				while($row = $result->fetch_assoc()) {
 					$row['name'] = utf8_encode($row['name']);
 					array_push($returnModel['data']['results'], $row);

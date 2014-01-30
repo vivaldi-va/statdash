@@ -34,7 +34,7 @@ angular.module('Deep.Services')
 					params['filter_terms'] = filters;
 				}
 				$http({
-					url: '../api/',
+					url: 'api/',
 					method: 'GET',
 					params: params
 				})
