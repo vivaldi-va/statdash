@@ -31,17 +31,17 @@ class User {
 		// check password length
 		
 		if(strlen($password) < 6) {
-			$returnModel['error'] = "password is too short (min. 6 characters)";
+			$returnModel['error'] = "PASS_TOO_SMALL";
 			return $returnModel;
 		} 
 		// email address not entered?
 		else if(empty($email) || !$email) {
-			$returnModel['error'] = "no email address entered";
+			$returnModel['error'] = "NO_EMAIL";
 			return $returnModel;
 		}
 		// name not entered?
 		else if(empty($name) || !$name) {
-			$returnModel['error'] = "no name entered";
+			$returnModel['error'] = "NO_NAME";
 			return $returnModel;
 		}
 		
@@ -57,7 +57,7 @@ class User {
 		// check for existing user
 		
 		if($this->_checkUserExists($email)) {
-			$returnModel['error'] = "email already registered";
+			$returnModel['error'] = "EMAIL_EXISTS";
 			return $returnModel;
 		}
 		
@@ -73,7 +73,7 @@ class User {
 						values(NULL, \"$email\", \"$salt\", \"$passHash\", CURRENT_TIMESTAMP, \"$ip\", CURRENT_TIMESTAMP, \"$ip\", 0, 0, 0)";
 		
 		if(!$this->_query($addUserSql)) {
-			$returnModel['error'] = "failed to register user, please try again";
+			$returnModel['error'] = "SERVER_ERR";
 			$returnModel['debug'] = $addUserSql;
 			return $returnModel;
 		}
