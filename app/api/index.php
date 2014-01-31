@@ -62,7 +62,7 @@ if(isset($_REQUEST['query'])) {
 			if($data) {
 				exit(json_encode($set->createSet($data)));
 			} else {
-				exit(json_encode(array("success"=>0, "error"=>"no data supplied to make set")));
+				exit(json_encode(array("success"=>0, "error"=>"NO_DATA")));
 			}
 			break;
 			
@@ -82,7 +82,7 @@ if(isset($_REQUEST['query'])) {
 			if(isset($_REQUEST['hash'])) {
 				exit(json_encode($set->removeSet($_REQUEST['hash'])));
 			} else {
-				$model = array("error" => "no set supplied", "success"=>0);
+				$model = array("error" => "NO_SETS", "success"=>0);
 				exit(json_encode($model));
 			}
 			break;
@@ -113,10 +113,22 @@ if(isset($_REQUEST['query'])) {
 				$graph = new Graph($_REQUEST['sets']);
 				exit(json_encode($graph->checkoutsOverTime()));
 			} else {
-				$model = array("error" => "no sets supplied", "success"=>0);
+				$model = array("error" => "NO_SETS", "success"=>0);
 				exit(json_encode($model));
 			} 
 			break;
+
+		case 'getcheckoutlocations':
+			if(isset($_REQUEST['sets'])) {
+				$graph = new Graph($_REQUEST['sets']);
+				exit(json_encode($graph->checkoutsAtLocations()));
+			} else {
+				$model = array("error" => "NO_SETS", "success"=>0);
+				exit(json_encode($model));
+			} 
+			break;
+
+
 		default:
 			exit(json_encode(array("error" => "BAD_QUERY")));
 			
@@ -128,7 +140,7 @@ if(isset($_REQUEST['query'])) {
 	
 	
 } else {
-	exit(json_encode(array("error" => "NO QUERY")));
+	exit(json_encode(array("error" => "NO_QUERY")));
 }
 
 

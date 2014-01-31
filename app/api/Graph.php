@@ -204,6 +204,50 @@ class Graph {
 		return $this->returnmodel;
 		
 	}
+
+	public function checkoutsAtLocations() {
+
+		$data = array();
+
+		foreach($this->sets as $hash) {
+			// define the data object model for use with nvd3
+			// 'values' in this case would be an array of arrays, the latter having the values [<unix timestamp>, <value>]
+
+			$dataArray = array("key"=>$this->_getSetName($hash), "values" => array());
+			$products = $this->_getSetProducts($hash);
+
+			$productsInString = implode(',', $products);
+			//echo $productsInString;
+			
+			// get the checkout data between now and the end of history
+			// store the checkout rows in an array
+			
+			$checkoutData = array();
+
+			$sql = "SELECT count(shoppingListProductsHistory.id) as quantity, shops.id, shops.latitude, shops.longitude, shops.name as shop_location, chains.name as shop_chain 
+			FROM shops, chains, shoppingListProductsHistory
+			WHERE shoppingListProductsHistory.shopID = shops.id 
+			AND shops.chainID = chains.id
+			AND shoppingListProductsHistory.ProductID IN ($productsInString)
+			GROUP BY shoppingListProductsHistory.shopID";
+			$result = $this->_query($sql, true);
+			while($row = $result->fetch_assoc()) {
+				array_push($dataArray['values'], 
+					array("shop" => array(
+						"latitude" => $row['latitude'], 
+						"longitude" => $row['longitude'], 
+						"shop_chain" => utf8_encode($row['shop_chain']), 
+						"shop_location" => utf8_encode($row['shop_location'])), 
+					"quantity" => $row['quantity']));
+			}
+
+			array_push($data, $dataArray);
+		}
+
+		$this->returnmodel['data'] = $data;
+		$this->returnmodel['success'] = true;
+		return $this->returnmodel;
+	}
 	
 	
 	
